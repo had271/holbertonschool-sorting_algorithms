@@ -1,83 +1,33 @@
 #include "sort.h"
 
 /**
- * swap - Swaps two integers in an array
- * @a: Pointer to first integer
- * @b: Pointer to second integer
+ * selection_sort - Sorts an array of integers in ascending order
+ *                  using the Selection sort algorithm
+ * @array: Pointer to the array to sort
+ * @size: Number of elements in the array
  */
-void swap(int *a, int *b)
+void selection_sort(int *array, size_t size)
 {
+    size_t i, j, min_idx;
     int temp;
 
-    temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-/**
- * lomuto_partition - Lomuto partition scheme
- * @array: Array to sort
- * @low: Starting index
- * @high: Ending index
- * @size: Size of the array
- *
- * Return: Index of the pivot
- */
-int lomuto_partition(int *array, int low, int high, size_t size)
-{
-    int pivot = array[high];
-    int i = low - 1;
-    int j;
-
-    for (j = low; j < high; j++)
-    {
-        if (array[j] <= pivot)
-        {
-            i++;
-            if (i != j)
-            {
-                swap(&array[i], &array[j]);
-                print_array(array, size);
-            }
-        }
-    }
-    if (i + 1 != high)
-    {
-        swap(&array[i + 1], &array[high]);
-        print_array(array, size);
-    }
-    return (i + 1);
-}
-
-/**
- * quick_sort_recursive - Recursively applies quick sort
- * @array: Array to sort
- * @low: Starting index
- * @high: Ending index
- * @size: Size of the array
- */
-void quick_sort_recursive(int *array, int low, int high, size_t size)
-{
-    int pivot;
-
-    if (low < high)
-    {
-        pivot = lomuto_partition(array, low, high, size);
-        quick_sort_recursive(array, low, pivot - 1, size);
-        quick_sort_recursive(array, pivot + 1, high, size);
-    }
-}
-
-/**
- * quick_sort - Sorts an array of integers in ascending order
- *              using the Quick sort algorithm
- * @array: Array to sort
- * @size: Size of the array
- */
-void quick_sort(int *array, size_t size)
-{
     if (array == NULL || size < 2)
         return;
 
-    quick_sort_recursive(array, 0, size - 1, size);
+    for (i = 0; i < size - 1; i++)
+    {
+        min_idx = i;
+        for (j = i + 1; j < size; j++)
+        {
+            if (array[j] < array[min_idx])
+                min_idx = j;
+        }
+        if (min_idx != i)
+        {
+            temp = array[i];
+            array[i] = array[min_idx];
+            array[min_idx] = temp;
+            print_array(array, size);
+        }
+    }
 }
